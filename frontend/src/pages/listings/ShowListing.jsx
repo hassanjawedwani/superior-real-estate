@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { listingsInit } from '../../../init/init';
+import axiosInstance from '../../../services/axiosInstance.js';
+import toast from 'react-hot-toast';
+
 
 
 const ShowListing = () => {
@@ -11,16 +13,21 @@ const ShowListing = () => {
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        setListing(listingsInit.find(listing => listing._id === listingId));
+        const listing = await axiosInstance.get(`/api/listings/${listingId}/show`);
+        if (listing.data.success) {
+          setListing(listing.data.listing);
+        } else {
+          toast.error(listing.data.message)
+        }
       } catch (err) {
-        console.log(err);
+        toast.error(err.response.data.message);
       } finally {
         setLoading(false);
       }
     }
     fetchListing();
   }, [listingId]);
-  console.log(listing)
+
   
   if (loading)  return <p>loading...</p>
   return (
@@ -44,3 +51,4 @@ const ShowListing = () => {
 }
 
 export default ShowListing
+
