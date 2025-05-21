@@ -3,24 +3,41 @@ import { Lock, Mail } from 'lucide-react';
 import { FcGoogle } from "react-icons/fc";
 import toast from 'react-hot-toast';
 import axiosInstance from '../../../services/axiosInstance';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 
 
 
 const Login = () => {
-  const [formData, setFormData] = useState({
+  const initialFormState = {
     email: "",
     password: ""
-  });
+  }
+  const [formData, setFormData] = useState(initialFormState);
+
+  const navigate = useNavigate();
 
   const customLoginHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance("/api/auth/login");
-      console.log(response);
+      const response = await axiosInstance.post("/api/auth/login", formData);
+
+      if (!response.data?.success) {
+        return toast.error(response.data?.message);
+      }
+
+      // update: send a message to mail about account creation
+      
+      toast.success(response.data?.message);
+      setFormData(initialFormState);
+      // here is new user data for storing in redux
+      const newUser = response.data?.user;
+      console.log(newUser);
+
+      navigate("/");
     } catch (err) {
-      toast(err.response.data.message || err.message || "Something went wrong!");
+      console.log(err)
+      toast.error(err.message || "Something went wrong!");
     } 
   }
 
