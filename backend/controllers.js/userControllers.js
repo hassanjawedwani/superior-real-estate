@@ -31,7 +31,7 @@ export const signup = async (req, res) => {
       password: hashedPassword
     });
 
-    const token = jwt.sign({ userId: user.username }, process.env.TOKEN_SECRET, {expiresIn: '1h'});
+    const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET, {expiresIn: '1h'});
     
     res.cookie("token", token, {
       httpOnly: process.env.NODE_ENV === "production" ? true : false,
@@ -62,8 +62,6 @@ export const login = async (req, res) => {
   if (!user) return res.json({ success: false, message: "Account from this mail don't exists!" });
    
   
- 
-
   // finding user in mongodb
   try {
     
@@ -73,7 +71,7 @@ export const login = async (req, res) => {
 
     if (!isPasswordTrue) return res.json({ success: false, message: "Password Incorrect!" });
 
-    const token = jwt.sign({ userId: user.username }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
     
     res.cookie("token", token, {
       httpOnly: process.env.NODE_ENV === "production" ? true : false,
@@ -86,5 +84,36 @@ export const login = async (req, res) => {
   } catch (err) {
   
     return res.json({ success: false, message: err.message || "Some error occured in db operations" });
+  }
+}
+
+export const logout = async (req, res) => {
+  try {
+    console.log("logout");
+  
+    res.clearCookie("token", {
+      httpOnly: process.env.NODE_ENV === "production" ? true : false,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+    });
+
+    return res.json({ isAuthorized: false });
+  } catch (err) {
+    return res.json({ isAuthorized: true, message: err.message });
+  }
+  
+}
+
+
+export const authme = async (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.json({ authenticated: false,  message: "Please login first before continue!" });
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    const { userId } = decoded;
+    const user = await User.findById(userId);
+    return res.json({ authenticated: true, user: {userId: user._id, username: user.username, email: user.email} });
+  } catch (err) {
+    console.log(err.message)
+    return res.json({ authenticated: false, message: "User is unauthorized!"});
   }
 }

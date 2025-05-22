@@ -6,6 +6,7 @@ import { initListings } from './init/init.js';
 import listingsRouter from "./routes/listings/listings.js";
 import cors from 'cors';
 import userRouter from './routes/user/userRoutes.js'
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -22,7 +23,9 @@ const corsOptions = {
   credentials : true,
 }
 app.use(cors(corsOptions));
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
+
 
 app.get("/", (req, res) => {
   console.log("hello root");

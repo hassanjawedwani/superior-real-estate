@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Lock, Mail } from 'lucide-react';
-import { FcGoogle } from "react-icons/fc";
 import { FaRegUser } from "react-icons/fa";
 import axiosInstance from '../../../services/axiosInstance';
 import { Link, useNavigate } from 'react-router';
 import toast, { Toaster } from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../redux/features/user/userSlice';
+
 
 
 const Signup = () => {
@@ -16,6 +18,8 @@ const Signup = () => {
   const [formData, setFormData] = useState(initialFormState);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const customSignupHandler = async (e) => {
     e.preventDefault();
@@ -31,7 +35,7 @@ const Signup = () => {
       // here is new user data for storing in redux
       const newUser = response.data?.user;
       console.log(newUser);
-
+      dispatch(createUser(newUser));
 
 
       navigate("/");

@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/user/login';
 import Signup from './pages/user/Signup';
 import { Toaster } from 'react-hot-toast';
+import PublicRoute from './routes/PublicRoute';
 
 
 const App = () => {
@@ -17,8 +18,16 @@ const App = () => {
         <Route path="/" element={<Navigate to="/listings" replace />} />
         <Route path="/listings" element={<Listings />} />
         <Route path="/listings/:listingId" element={<ShowListing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        } />
+        <Route path="/signup" element={
+          <PublicRoute>
+            <Signup />
+          </PublicRoute>
+        } />
       </Routes>
     </BrowserRouter>
   )

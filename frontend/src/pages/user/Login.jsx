@@ -4,6 +4,8 @@ import { FcGoogle } from "react-icons/fc";
 import toast from 'react-hot-toast';
 import axiosInstance from '../../../services/axiosInstance';
 import { Link, useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../redux/features/user/userSlice';
 
 
 
@@ -17,6 +19,10 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch()
+
+
+
   const customLoginHandler = async (e) => {
     e.preventDefault();
     try {
@@ -24,15 +30,18 @@ const Login = () => {
 
       if (!response.data?.success) {
         return toast.error(response.data?.message);
-      }
+      }     
 
       // update: send a message to mail about account creation
       
       toast.success(response.data?.message);
       setFormData(initialFormState);
+
       // here is new user data for storing in redux
       const newUser = response.data?.user;
       console.log(newUser);
+
+      dispatch(createUser(newUser));
 
       navigate("/");
     } catch (err) {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, signup } from '../../controllers.js/userControllers.js';
+import { authme, login, logout, signup } from '../../controllers.js/userControllers.js';
 const router = express.Router();
 
 router
@@ -9,5 +9,13 @@ router
 router
   .route("/login")
   .post(login);
+
+router
+  .route("/logout")
+  .post(logout);
+
+router
+  .route("/authme")
+  .get(authme);
 
 export default router;
