@@ -88,3 +88,21 @@ export const likeToogle = async (req, res) => {
     res.json({ success: false, message: err.message || "some error occured in like option"})
   }
 }
+
+
+export const createListing = async (req, res) => {
+  console.log("createLisitng route");
+  let images = req.files.map(file => file.path);
+  const list = {
+    images,
+    ...req.body
+  }
+  console.log(list);
+
+  try {
+    const newListing = await Listing.create(list);
+    res.json({ success: true, message: "New Listing Created!" });
+  } catch (err) {
+    res.json({success: false, message: err.message})
+  }
+}

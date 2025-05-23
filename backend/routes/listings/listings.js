@@ -1,7 +1,8 @@
 import express from 'express';
-import { getListings, getOneListing, likeToogle } from '../../controllers.js/listingsControllers.js';
+import { createListing, getListings, getOneListing, likeToogle } from '../../controllers.js/listingsControllers.js';
 import { authMiddleware } from '../../middlewares/authMiddleware.js';
 import { optionalAuthMiddleware } from '../../middlewares/optionalAuthMiddleware.js';
+import { upload } from '../../config/multer-cloudinary.js';
 const router = express.Router();
 
 router
@@ -14,6 +15,12 @@ router
 
 router
   .route("/:listingId/like")
-  .post(authMiddleware,  likeToogle);
+  .post(authMiddleware, likeToogle);
+  
+router
+  .route("/new")
+  .post(authMiddleware, upload.array("images"), createListing);
+  
+
 
 export default router;
