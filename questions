@@ -1,0 +1,1 @@
+# bhai when my token in cookie gets expired, i am logged out, when i will try to go into protected path it will make me to login page, but my redux store don't get wanished

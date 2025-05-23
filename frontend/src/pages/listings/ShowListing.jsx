@@ -25,8 +25,8 @@ const ShowListing = () => {
         setLoading(false);
       }
     }
-    fetchListing();
-  }, [listingId]);
+     fetchListing();
+  }, []);
 
   
   if (loading)  return <p>loading...</p>

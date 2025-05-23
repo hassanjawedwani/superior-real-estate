@@ -1,8 +1,28 @@
+import mongoose from "mongoose";
 import Listing from "../models/listing.js"
+import User from "../models/user.js";
 
 export const getListings = async (req, res) => {
   try {
-    const listings = await Listing.find();
+    const userId = req.userId;
+
+    let listings;
+
+    if (userId) {
+      console.log("user is logged in");
+      listings = await Listing.find();
+      listings = listings.map(listing => {
+        const isLiked = listing.likes.includes(mongoose.Types.ObjectId.createFromHexString(userId));
+        return {...listing.toObject(), isLiked, totalLikes: listing.likes.length}
+      })
+      console.log(listings);
+    } else {
+      console.log("user is not logged in");
+      listings = await Listing.find();
+    }
+    
+
+    
     res.json({ success: true, message:"Listings found successfully",  listings });
   } catch (err) {
     res.json({success: false, message: err.message})
@@ -15,5 +35,56 @@ export const getOneListing = async (req, res) => {
     res.json({ success: true, message:"Listings found successfully",  listing });
   } catch (err) {
     res.json({success: false, message: err.message})
+  }
+}
+
+export const likeToogle = async (req, res) => {
+  console.log("like toogle");
+
+  const userId = req.userId;
+  
+  const { listingId } = req.params; 
+
+  try {
+    const listing = await Listing.findById(listingId);
+    if (!listing) {
+      return res.json({ success: false, message: "Listing not found" });
+    }
+    
+    
+    const isLiked = listing.likes.map(id => id.toString()).includes(userId);
+    
+
+    if (isLiked) {
+      listing.likes = listing.likes.filter(id => id.toString() !== userId);
+    } else {
+      listing.likes.push(mongoose.Types.ObjectId.createFromHexString(userId));
+    }
+
+
+    await listing.save();
+
+    const user = await User.findById(userId);
+  
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+    
+    const isLisitngLikedByThisUser = user.likedListings.map(id => id.toString()).includes(listingId);
+
+    console.log(isLisitngLikedByThisUser)
+    
+    if (isLisitngLikedByThisUser) {
+      user.likedListings = user.likedListings.filter(id => id.toString() !== listingId);
+    } else {
+      user.likedListings.push(mongoose.Types.ObjectId.createFromHexString(listingId));
+    }
+
+    await user.save();
+
+    return res.json({ success: true, message: `${isLisitngLikedByThisUser ? "Unliked Successfully" : "Liked Successfully!"} ` });
+
+  } catch (err) {
+    res.json({ success: false, message: err.message || "some error occured in like option"})
   }
 }

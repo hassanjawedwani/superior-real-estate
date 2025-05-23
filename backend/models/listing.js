@@ -8,7 +8,9 @@ const listingSchema = new mongoose.Schema({
   location: { type: String, required: true },
   country: { type: String, required: true },
   rating: { type: Number },
-  likes: {type: [String]},
+  likes: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  ],
 });
 
 const Listing = mongoose.model("Listing", listingSchema);

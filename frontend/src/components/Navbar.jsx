@@ -21,7 +21,7 @@ const Navbar = () => {
       // removing user from redux
       dispatch(deleteUser());
 
-      toast.success(response.data?.message);
+      toast.success("User Logout Successfully!");
     
       navigate("/");
       
