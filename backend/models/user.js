@@ -6,7 +6,13 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: [true, "Please enter password"] },
   likedListings: [
     {type: mongoose.Schema.Types.ObjectId, ref: 'Listing'},
-  ]
+  ],
+  listingsOwner: [
+    {type: mongoose.Schema.Types.ObjectId, ref: 'Listing'}
+  ],
+  commentsListings: [
+    {type: mongoose.Schema.Types.ObjectId, ref: 'Listing'}
+  ] 
 });
 
 const User = mongoose.model("User", userSchema);

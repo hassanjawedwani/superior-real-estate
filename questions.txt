@@ -1,0 +1,19 @@
+# bhai when my token in cookie gets expired, i am logged out, when i will try to go into protected path it will make me to login page, but my redux store don't get wanished
+#bhhai update krnay k baad local state update krni chahea yah dobara data fetch krna chahea
+
+
+
+update:
+# bhai when my token in cookie gets expired, i am logged out, when i will try to go into protected path it will make me to login page, but my redux store don't get wanished
+#lising main owner add know
+#comment add krna
+#rating add krna
+#imageURL: { type: String }, // delet it after in model lisitinb ++ remove also from listing image show part of image URL
+#make new listing required listings
+#add loading toast in create new listing
+# show owner in new listin
+# creating listing ki selected imgae to full screen show and cross button lgana hy
+# show listing main like add krna
+# show lisitn k backend route me like or commend json send krwana
+#deleting with ther connect tblew relationsn 
+#jb unlogin comment krta hy to user login page pr to chla jata hain, laikin login honay k baad comment section pr nhi ata

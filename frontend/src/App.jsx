@@ -8,6 +8,8 @@ import Signup from './pages/user/Signup';
 import { Toaster } from 'react-hot-toast';
 import PublicRoute from './routes/PublicRoute';
 import AuthProvider from './components/AuthProvider';
+import NewListing from './pages/listings/NewListing';
+import PrivateRoute from './routes/PrivateRoute';
 
 
 const App = () => {
@@ -20,6 +22,11 @@ const App = () => {
           <Route path="/" element={<Navigate to="/listings" replace />} />
           <Route path="/listings" element={<Listings />} />
           <Route path="/listings/:listingId" element={<ShowListing />} />
+          <Route path="/listings/new" element={
+            <PrivateRoute>
+              <NewListing />
+            </PrivateRoute>
+          } />
           <Route path="/login" element={
             <PublicRoute>
               <Login />

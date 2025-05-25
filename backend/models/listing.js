@@ -10,8 +10,15 @@ const listingSchema = new mongoose.Schema({
   country: { type: String, required: true },
   rating: { type: Number, default: 0 },
   likes: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }
+    { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   ],
+  comments: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' , required: true},
+      text: { type: String, required: true}
+    }
+  ],
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
 const Listing = mongoose.model("Listing", listingSchema);

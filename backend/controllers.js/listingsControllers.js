@@ -6,23 +6,24 @@ export const getListings = async (req, res) => {
   try {
     const userId = req.userId;
 
-    let listings;
+    let listings = await Listing.find().populate({
+        path: "owner",
+        select: "username"
+    });
 
     if (userId) {
       console.log("user is logged in");
-      listings = await Listing.find();
+
       listings = listings.map(listing => {
         const isLiked = listing.likes.includes(mongoose.Types.ObjectId.createFromHexString(userId));
         return {...listing.toObject(), isLiked, totalLikes: listing.likes.length}
       })
-      console.log(listings);
     } else {
       console.log("user is not logged in");
-      listings = await Listing.find();
-    }
-    
-
-    
+      listings = listings.map(listing => {
+        return {...listing.toObject(), isLiked: false, totalLikes: listing.likes.length || 0}
+      })
+    } 
     res.json({ success: true, message:"Listings found successfully",  listings });
   } catch (err) {
     res.json({success: false, message: err.message})
@@ -31,7 +32,7 @@ export const getListings = async (req, res) => {
 export const getOneListing = async (req, res) => {
   const { listingId } = req.params;
   try {
-    const listing = await Listing.findById(listingId);
+    const listing = await Listing.findById(listingId).populate('comments.user', "username text");
     res.json({ success: true, message:"Listings found successfully",  listing });
   } catch (err) {
     res.json({success: false, message: err.message})
@@ -101,7 +102,44 @@ export const createListing = async (req, res) => {
 
   try {
     const newListing = await Listing.create(list);
+    const user = await User.findById(req.userId);
+    user.listingsOwner.push(user);
+    await user.save();
     res.json({ success: true, message: "New Listing Created!" });
+  } catch (err) {
+    res.json({success: false, message: err.message})
+  }
+}
+
+export const createComment = async (req, res) => {
+  console.log("create comment controller");
+  const { comment } = req.body;
+  const { listingId } = req.params;
+  const userId = req.userId;
+
+  const completeComment = {
+    user: userId,
+    text: comment
+  };
+
+  try {
+    const listing = await Listing.findById(listingId);
+    if (!listing) {
+      res.json({ success: false, message: "Listing not found!" });
+    }
+    listing.comments.push(completeComment);
+    await listing.save();
+
+    const user = await User.findById(userId);
+    if (!user) {
+      res.json({ success: false, message: "User not found!" });
+    }
+
+    user.commentsListings.push(listingId);
+    await listing.save();
+
+    res.json({ success: true, message: "Comment Added!", comments: listing.comments });
+    
   } catch (err) {
     res.json({success: false, message: err.message})
   }
