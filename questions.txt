@@ -17,3 +17,4 @@ update:
 # show lisitn k backend route me like or commend json send krwana
 #deleting with ther connect tblew relationsn 
 #jb unlogin comment krta hy to user login page pr to chla jata hain, laikin login honay k baad comment section pr nhi ata
+#profile page bnaana or usmain owner ki listings show krni hain

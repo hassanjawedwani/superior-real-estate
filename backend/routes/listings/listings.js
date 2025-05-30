@@ -1,5 +1,5 @@
 import express from 'express';
-import { createComment, createListing, getListings, getOneListing, likeToogle } from '../../controllers.js/listingsControllers.js';
+import { createComment, createListing, getListings, getOneListing, likeToogle } from '../../controllers/listingsControllers.js';
 import { authMiddleware } from '../../middlewares/authMiddleware.js';
 import { optionalAuthMiddleware } from '../../middlewares/optionalAuthMiddleware.js';
 import { upload } from '../../config/multer-cloudinary.js';

@@ -1,5 +1,7 @@
 import express from 'express';
-import { authme, login, logout, signup } from '../../controllers.js/userControllers.js';
+import { authme, login, logout, signup, updateProfile } from '../../controllers/userControllers.js';
+import { authMiddleware } from '../../middlewares/authMiddleware.js';
+import { upload } from '../../config/multer-cloudinary.js';
 const router = express.Router();
 
 router
@@ -17,5 +19,9 @@ router
 router
   .route("/authme")
   .get(authme);
+
+router
+  .route("/profile/edit")
+  .post(authMiddleware, upload.single('profilePhoto'), updateProfile);
 
 export default router;

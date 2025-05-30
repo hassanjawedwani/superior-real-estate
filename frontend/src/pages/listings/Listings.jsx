@@ -97,7 +97,7 @@ const Listings = () => {
                   </div>
                   <Link to={`/listings/${listing._id}`} onClick={e => e.stopPropagation()} state={{scrollToComments: true}} className='text-2xl hover:cursor-pointer flex flex-col items-center shrink-0'>
                     <FaRegComment />
-                    <span className='text-sm font-medium '>99 Comments</span>
+                    <span className='text-sm font-medium '>{listing.comments.length} Comments</span>
                   </Link>
                     
                   

@@ -75,7 +75,7 @@ const ShowListing = () => {
     <div className='max-w-7xl p-5 mx-auto'>
       <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 rounded-2xl overflow-hidden'>
         <img src={listing.images[0]} alt="listing Image" className='w-full h-auto object-cover'/>
-        <div className='bg-red-300 hidden sm:grid'>
+        <div className='hidden sm:grid'>
           Other image
         </div>
       </div>

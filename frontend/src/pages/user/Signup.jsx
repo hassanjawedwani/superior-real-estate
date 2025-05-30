@@ -45,13 +45,12 @@ const Signup = () => {
     } 
   }
 
-
-  const inputHandler = (e) => setFormData(prevData => ({...prevData, [e.target.name]: e.target.value}))
+  const inputHandler = (e) => setFormData(prevData => ({...prevData, [e.target.name]: e.target.value}));
 
   return (
     <div className='min-h-[calc(100vh-56px)] w-full p-5 flex items-center justify-center'>
       <div className='w-96  bg-white rounded-md p-5 shadow border border-gray-400 '>
-        <h1 className="text-center text-2xl font-medium mb-7">Login</h1>
+        <h1 className="text-center text-2xl font-medium mb-7">Signup</h1>
 
         {/* <button className='hover:cursor-pointer bg-white border border-gray-400 w-full text-lg rounded-full h-12 flex items-center justify-center gap-2 shadow hover:bg-gray-100' onClick={googleHandler}>
           <FcGoogle />

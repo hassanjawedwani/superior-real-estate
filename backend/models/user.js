@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
   ],
   commentsListings: [
     {type: mongoose.Schema.Types.ObjectId, ref: 'Listing'}
-  ] 
+  ],
+  profilePhoto: { type: String, default: "" }
 });
 
 const User = mongoose.model("User", userSchema);

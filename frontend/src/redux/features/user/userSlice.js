@@ -4,11 +4,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     isAuthorized: false,
-    data: {
-      userId: "",
-      username: "",
-      email: ""
-    }
+    data: {}
   },
   reducers: {
     createUser: (state, action) => {
@@ -17,11 +13,7 @@ export const userSlice = createSlice({
     },
     deleteUser: (state) => {
       state.isAuthorized = false
-      state.data = {
-        userId: "",
-        username: "",
-        email: ""
-      }
+      state.data = {}
     }
   },
 })

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../services/axiosInstance';
-import { useNavigate } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -25,8 +25,7 @@ const PrivateRoute = ({ children }) => {
   
   if(loading) return <p>loading</p>
 
- 
-  return children
+  return <Outlet />
 }
 
 export default PrivateRoute;

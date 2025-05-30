@@ -10,6 +10,8 @@ import PublicRoute from './routes/PublicRoute';
 import AuthProvider from './components/AuthProvider';
 import NewListing from './pages/listings/NewListing';
 import PrivateRoute from './routes/PrivateRoute';
+import Profile from './pages/user/Profile';
+import ProfileEdit from './pages/user/ProfileEdit';
 
 
 const App = () => {
@@ -37,6 +39,10 @@ const App = () => {
               <Signup />
             </PublicRoute>
           } />
+          <Route path="/profile" element={<PrivateRoute />}>
+            <Route index element={<Profile />} />
+            <Route path="edit" element={<ProfileEdit />} />
+          </Route>
         </Routes>
         </AuthProvider>
     </BrowserRouter>

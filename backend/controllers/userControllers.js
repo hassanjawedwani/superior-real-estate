@@ -110,10 +110,29 @@ export const authme = async (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
     const { userId } = decoded;
-    const user = await User.findById(userId);
-    return res.json({ authenticated: true, user: {userId: user._id, username: user.username, email: user.email} });
+    const user = await User.findById(userId).select("-password");
+    return res.json({ authenticated: true, user });
   } catch (err) {
     console.log(err.message)
     return res.json({ authenticated: false, message: "User is unauthorized!"});
   }
+}
+
+export const updateProfile = async (req, res) => {
+  console.log("update")
+  const userId = req.userId;
+  const profilePhoto = req.file?.path;
+  const updatedUserData = {
+    ...req.body,
+    profilePhoto
+  };
+  // console.log(userId);
+  try {
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedUserData, { new: true }).select("-password");
+    res.json({success: true, message: "User data Updated!", user: updatedUser})
+  } catch (err) {
+    res.json({success: false, message: err.message})
+  }
+
+
 }
